@@ -1,0 +1,43 @@
+
+import csv
+import os
+
+def register_student():
+    print("\n--- Student Registration ---")
+
+    roll_no = input("Enter Roll Number: ")
+    name = input("Enter Student Name: ")
+    department = input("Enter Department: ")
+    marks = input("Enter Marks: ")
+
+    if not all([roll_no, name, department, marks]):
+        print("All fields are required!")
+        return
+
+    try:
+        marks = float(marks)
+        if marks < 0 or marks > 100:
+            print("Marks must be between 0 and 100!")
+            return
+    except ValueError:
+        print("Enter valid numeric marks!")
+        return
+
+    file_exists = os.path.exists("students.csv")
+
+    with open("students.csv", "a", newline="") as file:
+        writer = csv.writer(file)
+
+        if not file_exists:
+            writer.writerow(
+                ["Roll No", "Name", "Department", "Marks"]
+            )
+
+        writer.writerow(
+            [roll_no, name, department, marks]
+        )
+
+    print("Student Registered Successfully!")
+
+if __name__ == "__main__":
+    register_student()
