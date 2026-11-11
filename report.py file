@@ -1,0 +1,51 @@
+
+import csv
+import os
+
+def generate_report():
+    print("\n--- Student Report Generation ---")
+
+    if not os.path.exists("students.csv"):
+        print("No student records found!")
+        return
+
+    with open("students.csv", "r") as file:
+        reader = csv.DictReader(file)
+        students = list(reader)
+
+    if not students:
+        print("No student records available!")
+        return
+
+    total = 0
+    print("\n--- Student Details ---")
+
+    for student in students:
+        marks = float(student["Marks"])
+        total += marks
+
+        print("Roll No:", student["Roll No"])
+        print("Name:", student["Name"])
+        print("Department:", student["Department"])
+        print("Marks:", marks)
+        print("----------------------")
+
+    average = total / len(students)
+
+    print("Total Students:", len(students))
+    print("Average Marks:", round(average, 2))
+
+    with open("student_report.txt", "w") as file:
+        file.write("STUDENT MANAGEMENT REPORT\n")
+        file.write("-------------------------\n")
+
+        for student in students:
+            file.write(str(student) + "\n")
+
+        file.write("\nTotal Students: " + str(len(students)))
+        file.write("\nAverage Marks: " + str(round(average, 2)))
+
+    print("Report generated successfully!")
+
+if __name__ == "__main__":
+    generate_report()
